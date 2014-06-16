@@ -1,0 +1,4 @@
+ImageHandlerBundle
+==================
+
+Image handler bundle
