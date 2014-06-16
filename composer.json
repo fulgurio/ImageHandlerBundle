@@ -1,0 +1,23 @@
+{
+    "name": "fulgurio/image-handler-bundle",
+    "type": "symfony-bundle",
+    "description": "Symfony FulgurioImageHandlerBundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Vincent GUERARD",
+            "email": "v.guerard@fulgurio.net"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "Fulgurio\\ImageHandlerBundle": ""
+        }
+    },
+    "target-dir": "Fulgurio/ImageHandlerBundle",
+    "require": {
+        "symfony/symfony": "2.4",
+        "vich/uploader-bundle": "dev-master",
+        "imagine/Imagine": "v0.3.0"
+    }
+}

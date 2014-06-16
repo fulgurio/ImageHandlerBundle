@@ -1,0 +1,9 @@
+services:
+    fulgurio_image_handler.annotation:
+        class: Fulgurio\ImageHandlerBundle\Annotation\AnnotationDriver
+        arguments: [@annotation_reader]
+
+    fulgurio_image_handler.event_listener:
+        class: Fulgurio\ImageHandlerBundle\Event\DoctrineUploaderListener
+        arguments: [@fulgurio_image_handler.annotation]
+        tags: [ name: doctrine.event_subscriber ]
