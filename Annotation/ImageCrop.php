@@ -24,8 +24,11 @@ class ImageCrop extends ImageResize
         //@todo: getter
         $getter = 'get' . ucfirst($property);
         $filename = $entity->$getter();
-        //@todo : image path
         $path = $this->getAbsUploadPath();
+        if ($path === '')
+        {
+            return;
+        }
         $imagine = new \Imagine\Gd\Imagine();
         $original = $imagine->open($path . $filename);
         $originalSize = $original->getSize();

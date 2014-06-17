@@ -46,16 +46,31 @@ class ImageResize implements ImageHandle
         //@todo: getter
         $getter = 'get' . ucfirst($property);
         $filename = $entity->getId() . DIRECTORY_SEPARATOR . $entity->$getter();
-        //@todo : image path
-        if (is_dir(__DIR__ . '/../../../../web/'))
+        $path = $this->getAbsUploadPath();
+        if ($path === '')
         {
-            $path = __DIR__ . '/../../../../web/uploads/';
+            return;
         }
         $imagine = new \Imagine\Gd\Imagine();
         $size = new \Imagine\Image\Box($this->getWidth(), $this->getHeight());
         $imagine->open($path . $filename)
                 ->thumbnail($size)
                 ->save($path . $filename);
+    }
+
+    protected function getAbsUploadPath()
+    {
+        if (is_dir(__DIR__ . '/../../../../web/'))
+        {
+            return __DIR__ . '/../../../../web/uploads/';
+        }
+        else if (is_dir(__DIR__ . '/../../../../../../web/'))
+        {
+            return __DIR__ . '/../../../../../../web/uploads/';
+        }
+        else {
+            return '';
+        }
     }
 
     /**
