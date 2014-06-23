@@ -14,8 +14,8 @@ interface ImageHandle
     /**
      * Picture handle
      *
-     * @param objet $entity
-     * @param string $property
+     * @param string $path
+     * @param string $filename
      */
-    public function handle($entity, $property);
+    public function handle($path, $filename);
 }

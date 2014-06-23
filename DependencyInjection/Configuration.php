@@ -25,6 +25,8 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
+        $rootNode = $treeBuilder->root('fulgurio_image_handler');
+
         return $treeBuilder;
     }
 }

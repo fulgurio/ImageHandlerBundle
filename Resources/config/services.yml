@@ -1,9 +1,32 @@
 services:
     fulgurio_image_handler.annotation:
-        class: Fulgurio\ImageHandlerBundle\Annotation\AnnotationDriver
+#        class: Fulgurio\ImageHandlerBundle\Annotation\AnnotationDriver
+        class: Fulgurio\ImageHandlerBundle\Metadata\Driver\AnnotationDriver
+#        tags: [{name: kernel.event_listener, event: kernel.controller, method: onKernelController}]
         arguments: [@annotation_reader]
 
-    fulgurio_image_handler.event_listener:
-        class: Fulgurio\ImageHandlerBundle\Event\DoctrineUploaderListener
-        arguments: [@fulgurio_image_handler.annotation]
-        tags: [ name: doctrine.event_subscriber ]
+#    fulgurio_image_handler.event_listener:
+##        parent:  vich_uploader.listener.uploader.doctrine.base
+#        class: Fulgurio\ImageHandlerBundle\Event\DoctrineUploaderListener
+##        arguments: [ @vich_uploader.adapter.orm, @fulgurio_image_handler.metadata_reader, @vich_uploader.upload_handler ]
+#        arguments: [ @vich_uploader.adapter.orm, @fulgurio_image_handler.metadata_reader ]
+#        tags: [ name: doctrine.event_subscriber ]
+#
+#    fulgurio_image_handler.metadata_reader:
+#        class: Vich\UploaderBundle\Metadata\MetadataReader
+#        arguments: [ @fulgurio_image_handler.metadata_factory ]
+#
+#    fulgurio_image_handler.metadata_factory:
+#        class: Metadata\MetadataFactory
+#        arguments: [ @fulgurio_image_handler.annotation ]
+
+    fulgurio_image_handler.image_listener:
+        class: Fulgurio\ImageHandlerBundle\EventListener\ImageListener
+        arguments : [ @annotation_reader, @vich_uploader.property_mapping_factory ]
+        tags:
+            - { name: kernel.event_subscriber }
+
+#    fulgurio_image_handler.warmup:
+#        class: Fulgurio\ImageHandlerBundle\CacheWarmer\ImageCacheWarmer
+#        tags: [{name: kernel.cache_warmer}]
+#        arguments: [@service_container]
