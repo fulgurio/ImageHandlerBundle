@@ -43,7 +43,7 @@ class ImageListener implements EventSubscriberInterface
     private $container;
 
 
-    const IMAGE_RESIZE_FIELD_ANNOTATION   = 'Fulgurio\ImageHandlerBundle\Annotation\ImageResize';
+    const IMAGE_RESIZE_FIELD_ANNOTATION   = 'Fulgurio\ImageHandlerBundle\Annotation\ImageHandle';
 
 
     /**
@@ -103,6 +103,10 @@ class ImageListener implements EventSubscriberInterface
                 if (isset($config[$mappingName]['height']))
                 {
                     $uploadableField->setHeight($config[$mappingName]['height']);
+                }
+                if (isset($config[$mappingName]['action']))
+                {
+                    $uploadableField->setAction($config[$mappingName]['action']);
                 }
             }
             $uploadableField->handle($dir, $mapping->getFileName($obj));

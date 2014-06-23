@@ -39,6 +39,7 @@ class Configuration implements ConfigurationInterface
                     ->useAttributeAsKey('id')
                     ->prototype('array')
                         ->children()
+                            ->scalarNode('action')->defaultNull()->end()
                             ->scalarNode('width')->defaultNull()->end()
                             ->scalarNode('height')->defaultNull()->end()
                         ->end()

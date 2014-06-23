@@ -63,6 +63,7 @@ You can type 3 fields for each function :
 - width (optional): width to resize / crop
 - height (optional): height to resize / crop
 - mappping (optional): name of config mapping, to set width and height in global config. See above
+- action (optional): by default, you'll resize the picture, but "crop" is also available
 
 
 In app/config/config.yml, just type something like that :
@@ -75,6 +76,7 @@ fulgurio_image_handler:
         second_size:
             width: 200
             height: 200
+            action: crop
 ```
 
 With Vich/UploadBundle, you need to config a mapping name. In my case, it's in
@@ -83,4 +85,4 @@ If you put in you config file a fulgurio_image_handler.mappings.avatar_image, it
  will use this settings, so picture will be resize to 400x400.
 But if you add a mapping settings in ImageHandler annotatin, like
 @ImageAnnotation\ImageResize(mapping="second_size")
-ImageHandler will resize to 200x200. Groovy !
+ImageHandler will crop to 200x200. Groovy !
