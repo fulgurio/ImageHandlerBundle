@@ -14,8 +14,12 @@ use Fulgurio\ImageHandlerBundle\Annotation\ImageHandle;
 /**
  * @Annotation
  */
-class ImageResize implements ImageHandle
+class ImageResize extends ImageHandle
 {
+    /**
+     * Picture size
+     * @var array
+     */
     private $size = array('width' => 50, 'height' => 50);
 
     /**
@@ -33,6 +37,7 @@ class ImageResize implements ImageHandle
         {
             $this->size['height'] = $options['height'];
         }
+        parent::__construct($options);
     }
 
     /**
@@ -54,13 +59,17 @@ class ImageResize implements ImageHandle
                 ->save($path . $filename);
     }
 
+    /**
+     * Size getter (width and height in an array)
+     * @return array
+     */
     public function getSize()
     {
         return $this->size;
     }
 
     /**
-     * Getter picture width
+     * Picture width getter
      *
      * @return number
      */
@@ -70,12 +79,36 @@ class ImageResize implements ImageHandle
     }
 
     /**
-     * Get picture height
+     * Picture width setter
+     *
+     * @param number $width
+     * @return ImageResize
+     */
+    public function setWidth($width)
+    {
+        $this->size['width'] = $width;
+        return $this;
+    }
+
+    /**
+     * Picture height getter
      *
      * @return number
      */
     public function getHeight()
     {
         return $this->size['height'];
+    }
+
+    /**
+     * Picture height setter
+     *
+     * @param number $height
+     * @return ImageResize
+     */
+    public function setHeight($height)
+    {
+        $this->size['height'] = $height;
+        return $this;
     }
 }

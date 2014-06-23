@@ -9,13 +9,41 @@
  */
 namespace Fulgurio\ImageHandlerBundle\Annotation;
 
-interface ImageHandle
+abstract class ImageHandle
 {
+    /**
+     * Mapping name
+     * @var string
+     */
+    private $mappingName = '';
+
+    /**
+     * Constructor
+     *
+     * @param array $options
+     */
+    public function __construct($options)
+    {
+        if (isset($options['mapping']))
+        {
+            $this->mappingName = $options['mapping'];
+        }
+    }
+
     /**
      * Picture handle
      *
      * @param string $path
      * @param string $filename
      */
-    public function handle($path, $filename);
+    abstract public function handle($path, $filename);
+
+    /**
+     * Mapping name getter
+     *
+     * @return string
+     */
+    final public function getMappingName() {
+        return $this->mappingName;
+    }
 }

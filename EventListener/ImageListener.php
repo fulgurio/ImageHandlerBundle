@@ -1,20 +1,21 @@
 <?php
-
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * This file is part of the FulgurioImageHandlerBundle package.
+ *
+ * (c) Fulgurio <http://fulgurio.net/>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
-
 namespace Fulgurio\ImageHandlerBundle\EventListener;
 
+use Doctrine\Common\Annotations\Reader as AnnotationReader;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Event\Event;
 use Vich\UploaderBundle\Event\Events;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
-use Doctrine\Common\Annotations\Reader as AnnotationReader;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Description of ImageListener
@@ -23,17 +24,41 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  */
 class ImageListener implements EventSubscriberInterface
 {
-    private $driver;
+    /**
+     * Annotation reader object
+     * @var Doctrine\Common\Annotations\Reader
+     */
+    private $reader;
+
+    /**
+     * Property mapping object
+     * @var Vich\UploaderBundle\Mapping\PropertyMappingFactory
+     */
+    private $factory;
+
+    /**
+     * Container object
+     * @var Symfony\Component\DependencyInjection\ContainerInterface
+     */
+    private $container;
+
 
     const IMAGE_RESIZE_FIELD_ANNOTATION   = 'Fulgurio\ImageHandlerBundle\Annotation\ImageResize';
 
 
-    function __construct(AnnotationReader $reader, PropertyMappingFactory $factory)
+    /**
+     * Constructor
+     *
+     * @param \Doctrine\Common\Annotations\Reader $reader
+     * @param \Vich\UploaderBundle\Mapping\PropertyMappingFactory $factory
+     * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+     */
+    function __construct(AnnotationReader $reader, PropertyMappingFactory $factory, ContainerInterface $container)
     {
+        $this->container = $container;
         $this->reader = $reader;
         $this->factory = $factory;
     }
-
 
     /**
      * Add events
@@ -61,12 +86,24 @@ class ImageListener implements EventSubscriberInterface
             }
             // determine the file's directory
             $dir = $mapping->getUploadDestination() . $mapping->getUploadDir($obj);
-
             $property = new \ReflectionProperty($obj, $mapping->getFileNamePropertyName());
             $uploadableField = $this->reader->getPropertyAnnotation($property, self::IMAGE_RESIZE_FIELD_ANNOTATION);
             if ($uploadableField === null)
             {
                 continue;
+            }
+            $config = $this->container->getParameter('fulgurio_image_handler.mappings');
+            $mappingName = $uploadableField->getMappingName() != '' ? $uploadableField->getMappingName() : $mapping->getMappingName();
+            if ($mappingName != '' && isset($config[$mappingName]))
+            {
+                if (isset($config[$mappingName]['width']))
+                {
+                    $uploadableField->setWidth($config[$mappingName]['width']);
+                }
+                if (isset($config[$mappingName]['height']))
+                {
+                    $uploadableField->setHeight($config[$mappingName]['height']);
+                }
             }
             $uploadableField->handle($dir, $mapping->getFileName($obj));
         }
