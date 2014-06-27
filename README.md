@@ -7,7 +7,13 @@ In the same way, Image handler add in this bundle a way to hanlde uploaded pictu
 
 Here is an example of use, with the table field "avatar"
 
-First, configure your entity class as explain in Vich Uploader :
+First, add the namespace for annotations :
+``` php
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Fulgurio\ImageHandlerBundle\Annotation as ImageAnnotation;
+```
+
+Configure your entity class as explain in Vich Uploader :
 ``` php
 /**
 [...]
@@ -54,11 +60,11 @@ At the end, you need to add image handler annotation to original field, avatar :
     /**
      * @ORM\Column(type="string", length=128, nullable=true)
      *
-     * @ImageAnnotation\ImageResize(width=100, height=100)
+     * @ImageAnnotation\ImageHandle(mapping="avatar_image", action="resize", width=100, height=100)
      */
     private $avatar;
 ```
-If you want to crop the picture, just replace ImageResize by ImageCrop, and change width of heigth as wanted.
+If you want to crop the picture, just replace the action by "crop", and change width of heigth as wanted.
 You can type 3 fields for each function :
 - width (optional): width to resize / crop
 - height (optional): height to resize / crop
