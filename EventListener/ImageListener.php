@@ -12,6 +12,7 @@ namespace Fulgurio\ImageHandlerBundle\EventListener;
 use Doctrine\Common\Annotations\Reader as AnnotationReader;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Event\Event;
 use Vich\UploaderBundle\Event\Events;
@@ -80,7 +81,7 @@ class ImageListener implements EventSubscriberInterface
         $mappings = $this->factory->fromObject($obj);
         foreach ($mappings as $mapping) {
             $file = $mapping->getFile($obj);
-            if ($file === null || !($file instanceof UploadedFile))
+            if ($file === null || !($file instanceof UploadedFile) && !($file instanceof File))
             {
                 continue;
             }

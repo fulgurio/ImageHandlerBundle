@@ -73,6 +73,10 @@ class ImageHandle
         {
             throw new \Exception('Action ' . $this->actionName . ' doesn\'t exist (crop or resize available)');
         }
+        if ($path[strlen($path) - 1] != DIRECTORY_SEPARATOR)
+        {
+            $path .= DIRECTORY_SEPARATOR;
+        }
         $this->{$this->actionName}($path, $filename);
     }
 
