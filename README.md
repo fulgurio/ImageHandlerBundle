@@ -1,7 +1,7 @@
 ImageHandlerBundle
 ==================
 
-Image handler bundle use the very helpful [Vich uploader bundle](https://github.com/dustin10/VichUploaderBundle|), which allows file upload with annotations.
+Image handler bundle use the very helpful [Vich uploader bundle](https://github.com/dustin10/VichUploaderBundle), which allows file upload with annotations.
 
 In the same way, Image handler adds in this bundle a way to handle uploaded picture, like resizing or cropping.
 
